@@ -4,6 +4,7 @@ var keys = require('./keys.js');
 
 var command = process.argv[2];
 
+
 // TWITTER API ==========================================================
 
 var Twitter = require('twitter');
@@ -22,9 +23,6 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
     }
   }
 });
-
-
-
 
 
 // OMDB API REQUEST =======================================================
@@ -104,14 +102,9 @@ var spotify = new Spotify(keys.spotifyKey);
 
  }
 
-
-  // else {
-  //   return console.log('Error occurred: ' + err);
-  // }
-  
-
 });
 }
+
 
  
 
