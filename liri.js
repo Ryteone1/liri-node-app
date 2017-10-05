@@ -27,9 +27,19 @@ spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, d
   if (err) {
     return console.log('Error occurred: ' + err);
   }
- 
-console.log(data); 
+
+console.log("Artist(s): " + data.tracks.items[0].artists[0].name); 
+console.log("Song name: " + data.tracks.items[0].name);
+console.log("Preview Link: " + data.tracks.items[0].preview_url);
+console.log("Album: " + data.tracks.items[0].album.name);
+
 });
+
+// var commands = process.argv[2];
+
+// if (commands === "my-tweets") {
+
+// }
 
 
 
