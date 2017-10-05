@@ -24,36 +24,7 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 });
 
 
-// SPOTIFY API ========================================================================
 
-var Spotify = require('node-spotify-api');
- 
-var spotify = new Spotify(keys.spotifyKey);
- 
-spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-  if (!err && command === "spotify-this-song") {
-
-    var musicInfo = data.tracks.items;
-
-    for (var j = 0; j < musicInfo.length; j++) {
-      
-      console.log("Artist(s): " + musicInfo[j].artists[0].name); 
-      console.log("Song name: " + musicInfo[j].name);
-      console.log("Preview Link: " + musicInfo[j].preview_url);
-      console.log("Album: " + musicInfo[j].album.name);
-  }
-
-  // else {
-  //   return console.log('Error occurred: ' + err);
-  // }
-  
-}
-});
-
-
-// if (commands === "my-tweets") {
-
-// }
 
 
 // OMDB API REQUEST =======================================================
@@ -64,7 +35,7 @@ var request = require('request');
 var nodeArgs = process.argv;
 
 // Create an empty variable for holding the movie name
-var movieName = "";
+var inputName = "";
 
 // Loop through all the words in the node argument
 // And do a little for-loop magic to handle the inclusion of "+"s
@@ -72,22 +43,22 @@ for (var k = 3; k < nodeArgs.length; k++) {
 
   if (k > 3 && k < nodeArgs.length) {
 
-    movieName = movieName + "+" + nodeArgs[k];
+    inputName = inputName + "+" + nodeArgs[k];
 
   }
 
   else {
 
-    movieName += nodeArgs[k];
+    inputName += nodeArgs[k];
 
   }
 }
 
 // Then run a request to the OMDB API with the movie specified
-var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=40e9cece";
+var queryUrl = "http://www.omdbapi.com/?t=" + inputName + "&y=&plot=short&apikey=40e9cece";
 
 // This line is just to help us debug against the actual URL.
-console.log(queryUrl);
+// console.log(queryUrl);
 
 request(queryUrl, function(error, response, body) {
 
@@ -108,8 +79,39 @@ request(queryUrl, function(error, response, body) {
 });
 
 
+// SPOTIFY API ========================================================================
+
+var Spotify = require('node-spotify-api');
+ 
+var spotify = new Spotify(keys.spotifyKey);
+
+ if (command === "spotify-this-song") {
+
+    spotify.search({ type: 'track', query: inputName }, function(err, data) {
+
+    if (!err) {
+
+    var musicInfo = data.tracks.items;
+
+    for (var j = 0; j < musicInfo.length; j++) {
+
+      console.log(" ");
+      console.log("Artist(s): " + musicInfo[j].artists[0].name); 
+      console.log("Song name: " + musicInfo[j].name);
+      console.log("Preview Link: " + musicInfo[j].preview_url);
+      console.log("Album: " + musicInfo[j].album.name + "\n");
+  }
+
+ }
 
 
+  // else {
+  //   return console.log('Error occurred: ' + err);
+  // }
+  
+
+});
+}
 
  
 
