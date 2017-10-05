@@ -1,6 +1,6 @@
 var keys = require('./keys.js');
 
-var fs = request('fs');
+// var fs = request('fs');
 
 var command = process.argv[2];
 
@@ -12,7 +12,8 @@ var client = new Twitter(keys.twitterKeys);
  
 var params = {screen_name: 'RyteCoding'};
 client.get('statuses/user_timeline', params, function(error, tweets, response) {
-  if (!error) {
+
+  if (!error && command === "my-tweets") {
     // console.log(tweets);
     for(var i = 0; i < tweets.length; i++) {
     	console.log(' ');
@@ -30,16 +31,22 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotifyKey);
  
 spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-  if (err) {
-    return console.log('Error occurred: ' + err);
+  if (!err && command === "spotify-this-song") {
+
+    var musicInfo = data.tracks.items;
+
+    for (var j = 0; j < musicInfo.length; j++) {
+      
+      console.log("Artist(s): " + musicInfo[j].artists[0].name); 
+      console.log("Song name: " + musicInfo[j].name);
+      console.log("Preview Link: " + musicInfo[j].preview_url);
+      console.log("Album: " + musicInfo[j].album.name);
   }
 
-var musicInfo = data.tracks.items
-for (var j = 0; j < musicInfo.length; j++) {
-	console.log("Artist(s): " + musicInfo[j].artists[0].name); 
-	console.log("Song name: " + musicInfo[j].name);
-	console.log("Preview Link: " + musicInfo[j].preview_url);
-	console.log("Album: " + musicInfo[j].album.name);
+  // else {
+  //   return console.log('Error occurred: ' + err);
+  // }
+  
 }
 });
 
@@ -61,17 +68,17 @@ var movieName = "";
 
 // Loop through all the words in the node argument
 // And do a little for-loop magic to handle the inclusion of "+"s
-for (var i = 3; i < nodeArgs.length; i++) {
+for (var k = 3; k < nodeArgs.length; k++) {
 
-  if (i > 3 && i < nodeArgs.length) {
+  if (k > 3 && k < nodeArgs.length) {
 
-    movieName = movieName + "+" + nodeArgs[i];
+    movieName = movieName + "+" + nodeArgs[k];
 
   }
 
   else {
 
-    movieName += nodeArgs[i];
+    movieName += nodeArgs[k];
 
   }
 }
@@ -85,7 +92,7 @@ console.log(queryUrl);
 request(queryUrl, function(error, response, body) {
 
   // If the request is successful
-  if (!error && response.statusCode === 200) {
+  if (!error && response.statusCode === 200 && command === "movie-this") {
 
     // Parse the body of the site and recover just the imdbRating
     // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
